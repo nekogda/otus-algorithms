@@ -1,0 +1,161 @@
+<input> 11 1 38 37 4 5 7 8 374 34 62 1
+
+    ;; Save start of array in R8 (offset)
+    LOAD =10
+    STORE 8
+
+    ;; Save N to R9
+    READ 0
+    STORE 9
+
+    ;; Compute end of array (N+offset): R7
+    ADD 8
+    STORE 7
+
+    JMP START
+
+
+;;; ========== HELPER FUNCTIONS
+
+CHECK_N:
+    ;; Check if N > 1
+    ;; Arguments: None
+    ;; Return: None
+    LOAD 9
+    SUB =1
+    JGTZ CHECK_N_END
+    JMP PRINT
+
+LOAD_LIST:
+    ;; Arguments:
+    ;;   R1: START_IDX
+    ;; Return:
+    ;;   None
+
+LOOP_LL:    ;; for (start; start < stop; ++start)
+
+    ;; Read next element from input
+    ;; and store to R[i]
+    READ 0
+    STORE *1
+
+    ;; Increment start
+    LOAD 1
+    ADD =1
+    STORE 1
+
+    ;; Compare: start < stop ?
+    LOAD 7
+    SUB 1
+
+    JGTZ LOOP_LL
+    JMP LOOP_LL_END
+
+
+CMP_AND_SWAP:
+    ;; Compare two numbers
+    ;; and swap if a[i] > a[k]
+    ;;
+    ;; Arguments:
+    ;;   R1: addr of a[i]
+    ;;   R2: addr of a[k]
+    ;; Return:
+    ;;   None
+
+    LOAD *1
+    SUB *2
+
+    JGTZ SWAP
+    JMP CMP_AND_SWAP_END
+
+SWAP:
+    LOAD *1
+    STORE 3
+    LOAD *2
+    STORE *1
+    LOAD 3
+    STORE *2
+    JMP CMP_AND_SWAP_END
+
+
+PRINT:
+    ;; Write array to output
+    ;; Arguments: None
+    ;; Return: None
+    LOAD 8
+    ;; R1: start of array
+    STORE 1
+PRINT_LOOP:
+    LOAD 1
+    WRITE *0
+    ADD =1
+    STORE 1
+    LOAD 7
+    SUB 1
+    JGTZ PRINT_LOOP
+    JMP PRINT_END
+
+;;; ========== END OF HELPER FUNCTIONS
+
+START:
+    ;; Load start argument to R1
+    LOAD 8
+    STORE 1
+    ;; Load stop argument to R2
+    LOAD 9
+    STORE 2
+    ;; Call
+    JMP LOAD_LIST
+LOOP_LL_END:
+
+    ;; Check if N > 1
+    JMP CHECK_N
+CHECK_N_END:
+
+    ;; Load start argument to R4 (i)
+    LOAD 8
+    STORE 4
+LOOP_OUTER:
+    ;; Load start+1 to R5 (k)
+    LOAD 4
+    ADD =1
+    STORE 5
+LOOP_INNER:
+    ;; Load addr of a[i] to R1
+    ;; Load addr of a[k] to R2
+    LOAD 4
+    STORE 1
+    LOAD 5
+    STORE 2
+    ;; Call
+    JMP CMP_AND_SWAP
+CMP_AND_SWAP_END:
+    ;; increment of k
+    LOAD 5
+    ADD =1
+    STORE 5
+
+    ;; repeat if k < stop?
+    LOAD 7
+    SUB 5
+    JGTZ LOOP_INNER
+
+    ;; increment of i
+    LOAD 4
+    ADD =1
+    STORE 4
+
+    ;; repeat if i < stop - 1
+    LOAD 7
+    SUB =1
+    SUB 4
+    JGTZ LOOP_OUTER
+
+    ;; Print sorted list
+    JMP PRINT
+PRINT_END:
+
+
+    JMP STOP
+STOP:
+    HALT

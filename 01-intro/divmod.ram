@@ -1,0 +1,43 @@
+<input> 5 2
+	;; load counter in R3(quotient)
+	LOAD =0
+	STORE 3
+	;; read elements out of input
+	READ 1
+	READ 2
+	LOAD 1
+
+LOOP:
+	SUB 2
+	STORE 4
+	;; increment counter R3
+	LOAD 3
+	ADD =1
+	STORE 3
+	;; repeat if R4 > 0
+	LOAD 4
+	JGTZ LOOP
+	;; if R4 == 0
+	JZ NO_RESIDUE
+	;; if R4 < 0
+	;; decrement counter R3
+	LOAD 3
+	SUB =1
+	STORE 3
+	;; compute reminder
+	LOAD 4
+	ADD 2
+	STORE 4
+	;; write result in output
+	WRITE 3
+	WRITE 4
+	JMP END
+
+NO_RESIDUE:
+	;; write result in output
+	WRITE 3
+	WRITE =0
+
+END:
+	HALT
+
