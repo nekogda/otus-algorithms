@@ -92,17 +92,16 @@ benchmark: 3.2.2 (defaults: timer=time.perf_counter disable_gc=False min_rounds=
 plugins: benchmark-3.2.2
 
 -------------------------------------------------- benchmark: 5 tests --------------------------------------------------
-Name (time in ns)                                  Min                         Max                        Mean          
+Name (time in ns)                                  Min                         Max                        Mean
 ------------------------------------------------------------------------------------------------------------------------
-test_fib_bench[fib_recursive_acc]             350.9922 (1.0)           18,936.9894 (1.0)              416.9728 (1.0)    
-test_fib_bench[fib_golden_ration]             710.9484 (2.03)          96,105.9704 (5.08)             821.4796 (1.97)   
-test_fib_bench[fib_iterative]               1,945.6493 (5.54)          36,869.3339 (1.95)           2,171.1358 (5.21)   
-test_fib_bench[fib_matrix]                 30,431.0233 (86.70)        122,979.9818 (6.49)          32,779.0587 (78.61)  
-test_fib_bench[fib_recursive]         272,731,827.9794 (>1000.0)  276,707,403.0126 (>1000.0)  273,876,427.0092 (>1000.0)
+test_fib_bench[fib_recursive_acc]             385.9750 (1.0)            8,307.9794 (1.0)              447.9498 (1.0)
+test_fib_bench[fib_golden_ration]             851.9855 (2.21)          14,101.0387 (1.70)             960.0064 (2.14)
+test_fib_bench[fib_iterative]               2,101.5003 (5.44)           9,440.4968 (1.14)           2,238.4349 (5.00)
+test_fib_bench[fib_matrix]                 14,059.0128 (36.42)         39,762.9919 (4.79)          14,736.2702 (32.90)
+test_fib_bench[fib_recursive]         285,937,067.0049 (>1000.0)  290,454,688.0163 (>1000.0)  288,430,649.0072 (>1000.0)
 ------------------------------------------------------------------------------------------------------------------------
 
 Legend:
   Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
   OPS: Operations Per Second, computed as 1 / Mean
-
 ```

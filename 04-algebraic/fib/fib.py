@@ -63,6 +63,33 @@ def fib_golden_ration(n: int) -> int:
     return int(f ** n / 5 ** 0.5 + 0.5)
 
 
+class Matrix2D:
+
+    def __init__(self, x11: int, x12: int, x21: int, x22: int):
+        self.x11 = x11
+        self.x12 = x12
+        self.x21 = x21
+        self.x22 = x22
+
+    @staticmethod
+    def INDENTITY():
+        return Matrix2D(1, 0, 0, 1)
+
+    @staticmethod
+    def BASE():
+        return Matrix2D(1, 1, 1, 0)
+
+    def pow2(self) -> 'Matrix2D':
+        return self.multiply(self)
+
+    def multiply(self, m: 'Matrix2D') -> 'Matrix2D':
+        x11 = self.x11 * m.x11 + self.x12 * m.x21
+        x12 = self.x11 * m.x12 + self.x12 * m.x22
+        x21 = self.x21 * m.x11 + self.x22 * m.x21
+        x22 = self.x21 * m.x12 + self.x22 * m.x22
+        return Matrix2D(x11, x12, x21, x22)
+
+
 def fib_matrix(n: int) -> int:
     """
     4. Алгоритм поиска чисел Фибоначчи
@@ -73,25 +100,13 @@ def fib_matrix(n: int) -> int:
     if 0 <= n < 3:
         return 1 if n else 0
 
-    F = [[1, 1],
-         [1, 0]]
+    res = Matrix2D.INDENTITY()
+    base = Matrix2D.BASE()
 
-    M = [[1, 1],
-         [1, 0]]
+    while (n > 1):
+        if n & 1:
+            res = res.multiply(base)
+        base = base.pow2()
+        n >>= 1
 
-    for i in range(2, n):
-        x = (F[0][0] * M[0][0] +
-             F[0][1] * M[1][0])
-        y = (F[0][0] * M[0][1] +
-             F[0][1] * M[1][1])
-        z = (F[1][0] * M[0][0] +
-             F[1][1] * M[1][0])
-        w = (F[1][0] * M[0][1] +
-             F[1][1] * M[1][1])
-
-        F[0][0] = x
-        F[0][1] = y
-        F[1][0] = z
-        F[1][1] = w
-
-    return F[0][0]
+    return res.multiply(base).x21
