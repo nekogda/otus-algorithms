@@ -15,7 +15,9 @@ class AbstractQueue(ABC):
 
 class PriorityQueue(AbstractQueue):
 
-    def __init__(self, init_list=[]):
+    def __init__(self, init_list=None):
+        if init_list is None:
+            init_list = []
         hs.heapify(init_list)
         self._heap = init_list
 

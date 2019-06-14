@@ -90,5 +90,5 @@ def remove(heap: List[T], idx: int) -> T:
 
     result = heap[idx]
     heap[idx] = heap.pop()
-    heapify(heap)
+    drown_rec(heap, idx, len(heap))
     return result
