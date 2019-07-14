@@ -1,0 +1,7 @@
+[package]
+name = "rbtree-rs"
+version = "0.1.0"
+authors = ["nekogda <nekogda@>"]
+edition = "2018"
+
+[dependencies]
