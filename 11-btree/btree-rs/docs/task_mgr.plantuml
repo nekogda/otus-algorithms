@@ -1,0 +1,62 @@
+@startuml
+start
+while (queue isn't empty?) 
+:get task from queue;
+  split
+    :**UPDATE**;
+    :update node key
+    by the new_key
+    (and update parents if needed);
+  split again
+    :**REMOVE**;
+    :remove k/v from node;
+  if (
+    Node is leaf and
+    min key removed?
+    ) then (yes)
+      :Add **UPDATE** task;
+    endif
+    if (node is drained?) then (yes)
+      :Add **REBALANCE** task;
+    endif
+  split again
+    :**REBALANCE**;
+    if (can merge with sibling) then (yes)
+      :merge with sibling;
+      :Add **REMOVE** task
+      for removed sibling;
+    else (no)
+      :rebalance;
+      :Add **UPDATE** task
+      for the parent node
+      (if min key was change);
+    endif
+  split again
+    :**INSERT**;
+    if (node is full?) then (yes)
+       :Add **SPLIT** task;
+    else (no)
+       :insert k/v to the node;
+       if (new min key inserted?) then (yes)
+         :Add **UPDATE** task
+         for the parent;
+       endif
+    endif
+  split again
+    :**SPLIT**;
+    :split node in half;
+    :Add **INSERT** task
+    (Return control to the insert.
+    Now it can insert k/v in one of half);
+    if (new root added?) then (yes)
+      :Add **INSERT** task
+      (Add min key of the left half
+      to the parent);
+    endif
+    :Add **INSERT** task
+    (Add min key of the right half
+    to the parent);
+  endsplit
+endwhile
+stop
+@enduml
